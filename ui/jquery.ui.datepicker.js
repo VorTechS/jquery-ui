@@ -74,6 +74,7 @@ function Datepicker() {
 		gotoCurrent: false, // True if today link goes back to current selection instead
 		changeMonth: false, // True if month can be selected directly, false if only prev/next
 		changeYear: false, // True if year can be selected directly, false if only prev/next
+                  changeDays: true, // True if the day can be selected directly, false if only prev/next
 		yearRange: 'c-10:c+10', // Range of years to display in drop-down,
 			// either relative to today's year (-nn:+nn), relative to currently displayed year
 			// (c-nn:c+nn), absolute (nnnn:nnnn), or a combination of the above (nnnn:-n)
@@ -1443,6 +1444,8 @@ $.extend(Datepicker.prototype, {
 		var selectOtherMonths = this._get(inst, 'selectOtherMonths');
 		var calculateWeek = this._get(inst, 'calculateWeek') || this.iso8601Week;
 		var defaultDate = this._getDefaultDate(inst);
+                  var showDays = this._get(inst, 'changeDays');
+
 		var html = '';
 		for (var row = 0; row < numMonths[0]; row++) {
 			var group = '';
@@ -1469,6 +1472,7 @@ $.extend(Datepicker.prototype, {
 					row > 0 || col > 0, monthNames, monthNamesShort) + // draw month headers
 					'</div><table class="ui-datepicker-calendar"><thead>' +
 					'<tr>';
+                    if (showDays) {
 				var thead = (showWeek ? '<th class="ui-datepicker-week-col">' + this._get(inst, 'weekHeader') + '</th>' : '');
 				for (var dow = 0; dow < 7; dow++) { // days of the week
 					var day = (dow + firstDay) % 7;
@@ -1517,6 +1521,7 @@ $.extend(Datepicker.prototype, {
 					}
 					calender += tbody + '</tr>';
 				}
+}
 				drawMonth++;
 				if (drawMonth > 11) {
 					drawMonth = 0;
@@ -1539,12 +1544,18 @@ $.extend(Datepicker.prototype, {
 			secondary, monthNames, monthNamesShort) {
 		var changeMonth = this._get(inst, 'changeMonth');
 		var changeYear = this._get(inst, 'changeYear');
+                  var changeDays = this._get(inst, 'changeDays');
+
 		var showMonthAfterYear = this._get(inst, 'showMonthAfterYear');
 		var html = '<div class="ui-datepicker-title">';
 		var monthHtml = '';
 		// month selection
 		if (secondary || !changeMonth)
+{
+                if (changeDays) {
 			monthHtml += '<span class="ui-datepicker-month">' + monthNames[drawMonth] + '</span>';
+                      }
+}
 		else {
 			var inMinYear = (minDate && minDate.getFullYear() == drawYear);
 			var inMaxYear = (maxDate && maxDate.getFullYear() == drawYear);
