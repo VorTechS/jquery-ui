@@ -812,6 +812,13 @@ $.extend(Datepicker.prototype, {
 				!$target.hasClass($.datepicker.markerClassName) &&
 				!$target.hasClass($.datepicker._triggerClass) &&
 				$.datepicker._datepickerShowing && !($.datepicker._inDialog && $.blockUI))
+
+                /* Support for month/year selection only, to modify raise the date selection event when the UI loses focus */
+                var inst = $.advdatepicker._getInst(event.currentTarget.activeElement);
+                if (!$.advdatepicker._get(inst, 'changeDays')) {
+
+                    $.advdatepicker._selectDate('#' + inst.id, $.advdatepicker._formatDate($.advdatepicker._curInst, $.advdatepicker._curInst.currentDay, $.advdatepicker._curInst.drawMonth, $.advdatepicker._curInst.drawYear));
+                }
 			$.datepicker._hideDatepicker();
 	},
 
